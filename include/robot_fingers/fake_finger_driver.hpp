@@ -27,6 +27,11 @@ public:
     {
     }
 
+    ~FakeFingerDriver()
+    {
+        std::cout << "Fake DESTURCIN" << std::endl;
+    }
+
     Observation get_latest_observation() override
     {
         // generating observations by a rule to make it easier to check they are
@@ -77,10 +82,12 @@ public:
 robot_interfaces::FingerTypes::BackendPtr create_fake_finger_backend(
     robot_interfaces::FingerTypes::BaseDataPtr robot_data)
 {
+    constexpr bool real_time_mode = false;
+
     auto robot = std::make_shared<FakeFingerDriver>();
     auto backend = std::make_shared<robot_interfaces::FingerTypes::Backend>(
-        robot, robot_data);
-    backend->set_max_action_repetitions(-1);
+        robot, robot_data, real_time_mode);
+    backend->set_max_action_repetitions(0);
 
     return backend;
 }
